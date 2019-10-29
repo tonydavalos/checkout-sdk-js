@@ -115,7 +115,7 @@ ___
 
 ### `<Optional>` klarna
 
-**● klarna**: *[KlarnaPaymentInitializeOptions](klarnapaymentinitializeoptions.md)*
+**● klarna**: *[Klarnav2PaymentInitializeOptions](klarnapaymentinitializeoptions.md)*
 
 The options that are required to initialize the Klarna payment method. They can be omitted unless you need to support Klarna.
 

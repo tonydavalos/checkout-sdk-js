@@ -1,6 +1,6 @@
-[@bigcommerce/checkout-sdk](../README.md) > [KlarnaPaymentInitializeOptions](../interfaces/klarnapaymentinitializeoptions.md)
+[@bigcommerce/checkout-sdk](../README.md) > [Klarnav2PaymentInitializeOptions](../interfaces/klarnapaymentinitializeoptions.md)
 
-# KlarnaPaymentInitializeOptions
+# Klarnav2PaymentInitializeOptions
 
 A set of options that are required to initialize the Klarna payment method.
 
@@ -8,7 +8,7 @@ When Klarna is initialized, a widget will be inserted into the DOM. The widget h
 
 ## Hierarchy
 
-**KlarnaPaymentInitializeOptions**
+**Klarnav2PaymentInitializeOptions**
 
 ## Index
 

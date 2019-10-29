@@ -83,7 +83,8 @@ export default class PaymentStrategyActionCreator {
     }
 
     initialize(options: PaymentInitializeOptions): ThunkAction<PaymentStrategyInitializeAction, InternalCheckoutSelectors> {
-        const { methodId, gatewayId } = options;
+        const { methodId, gatewayId, strategyVersion } = options;
+        let strategy;
 
         return store => defer(() => {
             const state = store.getState();
@@ -97,12 +98,18 @@ export default class PaymentStrategyActionCreator {
                 return empty();
             }
 
-            return concat(
-                of(createAction(PaymentStrategyActionType.InitializeRequested, undefined, { methodId })),
-                this._strategyRegistry.getByMethod(method)
+            if (strategyVersion) {
+                strategy = this._strategyRegistry.getByMethod(method, strategyVersion)
                     .initialize({ ...options, methodId, gatewayId })
-                    .then(() => createAction(PaymentStrategyActionType.InitializeSucceeded, undefined, { methodId }))
-            );
+                    .then(() => createAction(PaymentStrategyActionType.InitializeSucceeded, undefined, { methodId }));
+            } else {
+                strategy = this._strategyRegistry.getByMethod(method)
+                    .initialize({ ...options, methodId, gatewayId })
+                    .then(() => createAction(PaymentStrategyActionType.InitializeSucceeded, undefined, { methodId }));
+            }
+
+            return concat(
+                of(createAction(PaymentStrategyActionType.InitializeRequested, undefined, { methodId })), strategy);
         }).pipe(
             catchError(error => throwErrorAction(PaymentStrategyActionType.InitializeFailed, error, { methodId }))
         );

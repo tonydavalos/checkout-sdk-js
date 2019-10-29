@@ -6,6 +6,7 @@ import { BraintreePaymentInitializeOptions, BraintreeVisaCheckoutPaymentInitiali
 import { ChasePayInitializeOptions } from './strategies/chasepay';
 import { GooglePayPaymentInitializeOptions } from './strategies/googlepay';
 import { KlarnaPaymentInitializeOptions } from './strategies/klarna';
+import { KlarnaV2PaymentInitializeOptions } from './strategies/klarnav2';
 import { MasterpassPaymentInitializeOptions } from './strategies/masterpass';
 import { PaypalExpressPaymentInitializeOptions } from './strategies/paypal';
 import { SquarePaymentInitializeOptions } from './strategies/square';
@@ -27,6 +28,14 @@ export interface PaymentRequestOptions extends RequestOptions {
      * i.e.: Adyen and Klarna.
      */
     gatewayId?: string;
+
+    /**
+     * The identifier of the strategy to be loaded. This
+     * option is only required if the provider offers multiple payment options
+     * and another version of the provider is added and we want all versions
+     * working at the same time. i.e.: Adyen and Klarna.
+     */
+    strategyVersion?: string;
 }
 
 /**
@@ -64,6 +73,12 @@ export interface PaymentInitializeOptions extends PaymentRequestOptions {
      * They can be omitted unless you need to support Klarna.
      */
     klarna?: KlarnaPaymentInitializeOptions;
+
+    /**
+     * The options that are required to initialize the Klarna payment method.
+     * They can be omitted unless you need to support Klarna.
+     */
+    klarnav2?: KlarnaV2PaymentInitializeOptions;
 
     /**
      * The options that are required to initialize the Masterpass payment method.

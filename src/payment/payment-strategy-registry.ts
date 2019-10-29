@@ -18,12 +18,12 @@ export default class PaymentStrategyRegistry extends Registry<PaymentStrategy, P
         super(options);
     }
 
-    getByMethod(paymentMethod?: PaymentMethod): PaymentStrategy {
+    getByMethod(paymentMethod?: PaymentMethod, strategyVersion?: string): PaymentStrategy {
         if (!paymentMethod) {
             return this.get();
         }
 
-        const token = this._getToken(paymentMethod);
+        const token = this._getToken(paymentMethod, strategyVersion);
 
         const cacheToken = [paymentMethod.gateway, paymentMethod.id]
             .filter(value => value !== undefined && value !== null)
@@ -32,8 +32,10 @@ export default class PaymentStrategyRegistry extends Registry<PaymentStrategy, P
         return this.get(token, cacheToken);
     }
 
-    private _getToken(paymentMethod: PaymentMethod): PaymentStrategyType {
-        const methodId = paymentMethod.gateway || paymentMethod.id;
+    private _getToken(paymentMethod: PaymentMethod, strategyVersion?: string): PaymentStrategyType {
+        const methodId = strategyVersion && paymentMethod.gateway ?
+            `${ paymentMethod.gateway }${ strategyVersion }` :
+            paymentMethod.gateway || paymentMethod.id;
 
         if (this._hasFactoryForMethod(methodId)) {
             return methodId;
