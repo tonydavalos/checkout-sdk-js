@@ -2811,6 +2811,13 @@ declare interface KlarnaLoadResponse {
     };
 }
 
+declare interface KlarnaLoadResponse_2 {
+    show_form: boolean;
+    error?: {
+        invalid_fields: string[];
+    };
+}
+
 /**
  * A set of options that are required to initialize the Klarna payment method.
  *
@@ -2830,6 +2837,32 @@ declare interface KlarnaPaymentInitializeOptions {
      * or not the widget is loaded successfully.
      */
     onLoad?(response: KlarnaLoadResponse): void;
+}
+
+/**
+ * A set of options that are required to initialize the Klarna payment method.
+ *
+ * When Klarna is initialized, a widget will be inserted into the DOM. The
+ * widget has a list of payment options for the customer to choose from.
+ */
+declare interface KlarnaV2PaymentInitializeOptions {
+    /**
+     * The ID of a container which the payment widget should insert into.
+     */
+    container: string;
+    /**
+     * The payment_method_category specifies which of Klarna’s customer offerings
+     * (Pay now, Pay later or Slice it) that is being shown.
+     */
+    payment_method_category: string;
+    /**
+     * A callback that gets called when the widget is loaded and ready to be
+     * interacted with.
+     *
+     * @param response - The result of the initialization. It indicates whether
+     * or not the widget is loaded successfully.
+     */
+    onLoad?(response: KlarnaLoadResponse_2): void;
 }
 
 declare interface LabelStyles extends InlineElementStyles {
@@ -3118,6 +3151,11 @@ declare interface PaymentInitializeOptions extends PaymentRequestOptions {
      */
     klarna?: KlarnaPaymentInitializeOptions;
     /**
+     * The options that are required to initialize the Klarna payment method.
+     * They can be omitted unless you need to support Klarna.
+     */
+    klarnav2?: KlarnaV2PaymentInitializeOptions;
+    /**
      * The options that are required to initialize the Masterpass payment method.
      * They can be omitted unless you need to support Masterpass.
      */
@@ -3168,6 +3206,7 @@ declare interface PaymentMethod {
     nonce?: string;
     initializationData?: any;
     returnUrl?: string;
+    strategyVersion?: string;
 }
 
 declare interface PaymentMethodConfig {
@@ -3201,6 +3240,13 @@ declare interface PaymentRequestOptions extends RequestOptions {
      * i.e.: Adyen and Klarna.
      */
     gatewayId?: string;
+    /**
+     * The identifier of the strategy to be loaded. This
+     * option is only required if the provider offers multiple payment options
+     * and another version of the provider is added and we want all versions
+     * working at the same time. i.e.: Adyen and Klarna.
+     */
+    strategyVersion?: string;
 }
 
 declare interface PaymentSettings {
